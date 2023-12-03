@@ -151,7 +151,7 @@ const Home = () => {
           ref={postBodyInputRef}
           />
         <br />
-        <button type="submit">Get posts</button>
+        <button type="submit">submit posts</button>
       </form>
       )}
       {isFormVisible && (
@@ -182,7 +182,7 @@ const Home = () => {
           ref={postBodyInputRef}
           />
         <br  />
-        <button type="submit">Get posts</button>
+        <button type="submit">submit posts</button>
         <span>
         {alert && alert}
           {isLoading && "Loading..."}
