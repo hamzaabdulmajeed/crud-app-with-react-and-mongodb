@@ -1,125 +1,3 @@
-// import axios from 'axios';
-// import { useState, useRef, useEffect} from 'react';
-// import WeatherCard from '../weatherwid/weatherwid';
-
-
-// const Home = () => {
-
-//     const [weatherData, setweatherData]= useState([])
-//     const cityNameRef = useRef(null)
-
-//     const [currentLocationWeather, setcurrentLocationWeather] = useState(null)
-//     const [isLoading, setisLoading] = useState(false)
-//     useEffect(() =>{
-
-//         setisLoading(true)
-//         const controller = new AbortController();
-//         if (navigator.geolocation) {
-//             navigator.geolocation.getCurrentPosition(async (location) => {
-//               console.log("location: ", location);
-
-//               try{
-                
-//                 let API_KEY = "e0f99c494c2ce394a18cc2fd3f100543"
-//                 const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}&units=metric`,
-//                 {
-//                     signal: controller.signal,
-//                   } 
-//                 )
-//                     console.log(response.data);
-//                     setisLoading(false)
-//                   setcurrentLocationWeather(response.data)
-              
-//                     // document.querySelector('#result').innerHTML =`current temprature of ${response.data.name} is ${response.data.main.temp}°C`
-                
-                  
-//                 } catch(error) {
-//                     // handle error
-//                     console.log(error.data);
-//                     setisLoading(false)
-//                 }   
-//                 })
-//             }else {
-//                     console.log("Geolocation is not supported by this browser.");
-//                   }
-
-//                   return () => {
-//                     // cleanup function
-//                     controller.abort();
-//                   };
-    
-//      }, [])
-        
-            
-        
-         
-
-//     const submitHandler = async (e) => {
-//         e.preventDefault();
-//         console.log("cityName: ", cityNameRef.current.value);
-//         let API_KEY = "e0f99c494c2ce394a18cc2fd3f100543";
-//     try {
-//         setIsLoading(true);
-      
-
-//       const response = await axios.get(
-//         `https://api.openweathermap.org/data/2.5/weather?q=${cityNameRef.current.value}&appid=${API_KEY}&units=metric`
-//          ,{
-//             signal: controller.signal,
-//           }     
-//         );
-
-//       console.log(response.data);
-//       setWeatherData([response.data, ...weatherData]);
-//       setIsLoading(false);
-//     } catch (error) {
-//       // handle error
-//       console.log(error?.data);
-//     //   setIsLoading(false);
-//     }
-//     }       
-
-//         // let cityName = document.querySelector("#cityNameInput").value;
-    
-  
-
-//     return <div>
-//         <form onSubmit={submitHandler}>
-//         <label htmlFor="cityNameInput"> City Name:</label>
-//         <input
-//           id="cityNameInput"
-//           type="text"
-//           required
-//           minLength={2}
-//           maxLength={20}
-//         //   onChange={(e)=>setCityName(e.target.value)}
-//           ref={cityNameRef}
-//           //   onChange={(e) => setCityName(e.target.value)}
-//         //   ref={cityNameRef}
-//         />
-//         <br />
-//         <button type="submit">Get Weather</button>
-//         </form>       
-// <hr />
-
-
-
-// {isLoading ? <div>Loading...</div> : null}
-
-// {weatherData.length || currentLocationWeather || isLoading ? null : <div>No Data</div>}
-
-// {weatherData.map((eachWeatherData, index) => {
-//   return <WeatherCard key={index} weatherData={eachWeatherData} />;
-// })}
-
-// {currentLocationWeather ? <WeatherCard weatherData={currentLocationWeather} /> : null}
-//   </div>
-  
-  
-// };
-
-
-// export default Home
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./home.css"
@@ -130,14 +8,21 @@ const Home = () => {
   const postTitleInputRef = useRef(null);
   const postBodyInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  
   
   const [alert, setAlert] = useState(null);
   const [editAlert, setEditAlert] = useState(null)
 
   const [allPosts, setAllPosts] = useState([]);
   const [toggleRefresh, setToggleRefresh] =useState(false)
-  
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const openFormPopup = () => {
+    setIsFormVisible(true);
+  };
+
+  const closeFormPopup = () => {
+    setIsFormVisible(false);
+  };
   const getAllPosts = async () =>{
     try {
       
@@ -191,6 +76,7 @@ const Home = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsFormVisible(false);
     // console.log("cityName: ", cityNameRef.current.value);
 
     
@@ -224,6 +110,7 @@ const Home = () => {
         title: title,
         text: text,
       });
+      
 
       setIsLoading(false);
       console.log(response.data);
@@ -237,14 +124,49 @@ const Home = () => {
    };
   return (
     <div>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="postTitleInput"> Post Title:</label>
+      {!isFormVisible && (
+      <form action="" className="f-style">
+      <label htmlFor="postTitleInput"> Post Title:</label>
+        <input
+        id="postTitleInput"
+        type="text"
+        required
+        minLength={2}
+        maxLength={200}
+        onClick={openFormPopup}
+        // onClick={() => setIsFormVisible(true)} // Set the form visibility to true when clicked
+        ref={postTitleInputRef}
+      />
+      <br />
+        <label htmlFor="postBodyInput"> Post Text:</label>
+        <textarea
+          id="postBodyInput"
+          type="text"
+          required
+          minLength={2}
+          maxLength={200}
+          onClick={openFormPopup}
+          // onClick={() => setIsFormVisible(true)}
+          //   onChange={(e) => setCityName(e.target.value)}
+          ref={postBodyInputRef}
+          />
+        <br />
+        <button type="submit">Get posts</button>
+      </form>
+      )}
+      {isFormVisible && (
+       <div className="popup">
+       <div className="popup-content">
+         <span className="close-btn" onClick={closeFormPopup}>&times;</span>
+
+        <form onSubmit={submitHandler} className="f-style">
+          <label htmlFor="postTitleInput"> Post Title:</label>
         <input
           id="postTitleInput"
           type="text"
           required
           minLength={2}
-          maxLength={20}
+          maxLength={200}
           //   onChange={(e) => setCityName(e.target.value)}
           ref={postTitleInputRef}
         />
@@ -255,18 +177,24 @@ const Home = () => {
           type="text"
           required
           minLength={2}
-          maxLength={20}
+          maxLength={200}
           //   onChange={(e) => setCityName(e.target.value)}
           ref={postBodyInputRef}
           />
-        <br />
+        <br  />
         <button type="submit">Get posts</button>
         <span>
         {alert && alert}
           {isLoading && "Loading..."}
           </span>
-      </form>
-          
+        </form>
+        </div>
+      </div>  
+      )
+        
+      }
+      
+      
 
           <br />
    <div>
