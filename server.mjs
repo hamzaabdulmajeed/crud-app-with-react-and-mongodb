@@ -38,7 +38,7 @@ app.use("/static", express.static(path.join(__dirname, 'static')))
 
 app.use(express.static(path.join(__dirname, './web/build')))
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`Example server listening on port ${PORT}`)
 })
