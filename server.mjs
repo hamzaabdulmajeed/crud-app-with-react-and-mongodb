@@ -12,15 +12,9 @@ import postRouter from './routes/post.mjs'
 
 
 
-
 const app = express();
 app.use(express.json()); // body parser
 app.use(cors())
-
-//     /static/vscode_windows.exe
-
-
-app.use(express.static(path.join(__dirname, './web/build')))
 
 // /api/v1/login
 app.use("/api/v1", authRouter)
@@ -39,8 +33,12 @@ app.use("/api/v1", postRouter) // Secure api
 
 
 
+//     /static/vscode_windows.exe
+app.use("/static", express.static(path.join(__dirname, 'static')))
 
-const PORT = process.env.PORT || 5001;
+app.use(express.static(path.join(__dirname, './web/build')))
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Example server listening on port ${PORT}`)
 })
