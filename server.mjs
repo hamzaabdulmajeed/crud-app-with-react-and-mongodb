@@ -16,6 +16,11 @@ const app = express();
 app.use(express.json()); // body parser
 app.use(cors())
 
+app.get('/', (req, res) => {
+    res.send('Welcome to my server!');
+  });
+  
+
 // /api/v1/login
 app.use("/api/v1", authRouter)
 
