@@ -7,7 +7,7 @@ const __dirname = path.resolve();
 import authRouter from './routes/auth.mjs'
 import commentRouter from './routes/comment.mjs'
 import feedRouter from './routes/feed.mjs'
-import postRouter from './routes/post.mjs'
+// import postRouter from './routes/post.mjs'
 
 
 
@@ -33,7 +33,7 @@ app.use((req, res, next) => { // JWT
     }
 })
 
-app.use("/api/v1", postRouter) // Secure api
+// app.use("/api/v1", postRouter) // Secure api
 
 
 
