@@ -5,8 +5,8 @@ import path from 'path';
 const __dirname = path.resolve();
 
 import authRouter from './routes/auth.mjs'
-import commentRouter from './routes/comment.mjs'
-import feedRouter from './routes/feed.mjs'
+// import commentRouter from './routes/comment.mjs'
+// import feedRouter from './routes/feed.mjs'
 // import postRouter from './routes/post.mjs'
 
 
@@ -41,7 +41,7 @@ app.use((req, res, next) => { // JWT
 //     /static/vscode_windows.exe
 app.use("/static", express.static(path.join(__dirname, 'static')))
 
-app.use(express.static(path.join(__dirname, './web/build')))
+// app.use(express.static(path.join(__dirname, './web/build')))
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
